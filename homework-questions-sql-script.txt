@@ -1,0 +1,36 @@
+
+-- Question 3. -- ANSWER: 20530
+select count(1)
+from green_taxi_trips_2019
+where lpep_pickup_datetime::date = '2019-01-15'
+and lpep_dropoff_datetime::date = '2019-01-15';
+
+-- Question 4. -- ANSWER: "2019-01-15"
+select 
+	lpep_pickup_datetime::date as pickup_date
+from green_taxi_trips_2019
+order by trip_distance desc
+limit 1;
+
+
+-- Question 5. -- ANSWER: 2:1282; 3:254
+select 
+	passenger_count,
+	count(1) as count_trips
+from green_taxi_trips_2019
+where lpep_pickup_datetime::date = '2019-01-01'
+and passenger_count in (2, 3)
+group by passenger_count;
+
+
+-- Question 6. -- ANSWER: "Long Island City/Queens Plaza"
+select 
+	t.tip_amount,
+	puz."Zone" as pick_up_zone,
+	doz."Zone" as drop_off_zone
+from green_taxi_trips_2019 as t
+join zones as puz on puz."LocationID" = t."PULocationID"
+join zones as doz on doz."LocationID" = t."DOLocationID"
+where puz."Zone" = 'Astoria'
+order by tip_amount desc
+limit 1;
